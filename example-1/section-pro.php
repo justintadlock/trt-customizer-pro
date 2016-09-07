@@ -65,7 +65,7 @@ class Example_1_Customize_Section_Pro extends WP_Customize_Section {
 				{{ data.title }}
 
 				<# if ( data.pro_text && data.pro_url ) { #>
-					<a href="{{ data.pro_url }}" class="button button-secondary" target="_blank">{{ data.pro_text }}</a>
+					<a href="{{ data.pro_url }}" class="button button-secondary alignright" target="_blank">{{ data.pro_text }}</a>
 				<# } #>
 			</h3>
 		</li>
