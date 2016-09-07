@@ -61,7 +61,7 @@ class Example_1_Customize_Section_Pro extends WP_Customize_Section {
 
 		<li id="accordion-section-{{ data.id }}" class="accordion-section control-section control-section-{{ data.type }}">
 
-			<h3 class="accordion-section-title" tabindex="0">
+			<h3 class="accordion-section-title">
 				{{ data.title }}
 
 				<# if ( data.pro_text && data.pro_url ) { #>
