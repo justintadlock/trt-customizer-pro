@@ -4,7 +4,6 @@
 
 #customize-controls .control-section-example-1 .accordion-section-title:hover,
 #customize-controls .control-section-example-1 .accordion-section-title:focus {
-	cursor:           default;
 	background-color: #fff;
 }
 
