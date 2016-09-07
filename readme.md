@@ -17,7 +17,7 @@ To test the output, simply drop the `trt-customize-pro` folder into the root of 
 Then, load an example with this code in your theme's `functions.php`:
 
 ```
-require_once( trailingslashit( get_template_directory() ) . 'trt-customize-pro/example-1.php' );
+require_once( trailingslashit( get_template_directory() ) . 'trt-customize-pro/example-1/class-customize.php' );
 ```
 
 ## Usage
