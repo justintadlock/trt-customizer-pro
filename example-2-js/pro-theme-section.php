@@ -8,22 +8,51 @@
 //1) Add this code to your functions.php. You can also create a separate file and include it in your theme.
 //2) Replace the example values with yours
 
-//'customize_controls_init' fires when Customizer controls are initialized, before scripts are enqueued.
-//@see wp-admin/customize.php#53
-add_action( 'customize_controls_init', 'add_pro_section' );
-function add_pro_section() {
-    new Example_2_js_customize(
+//let's hook on customize_register
+//Why ?
+//1) we need the manager object
+//2) this code won't be fire elsewhere than in a customization context, which we want.
+add_action( 'customize_register', 'preprocess_pro_section' );
+function preprocess_pro_section( $manager ) {
+    // Register custom section types.
+    // => prints the js template in the customizer pane
+    $manager->register_section_type( 'Customize_Section_Pro' );
+
+    //Instantiate the class that will print :
+    //=> the js code that will instantiate our section
+    //=> the custom css style
+    new Process_Pro_Section(
         //Example values
         array(
-          'type' => 'example-2-js',//this is the
-          'title' => esc_html__( 'Theme Name Pro', 'example-2-js' ),
-          'pro_text' => esc_html__( 'Go Pro', 'example-2-js' ),
+          'title' => esc_html__( 'Theme Name Pro', 'customize-section-pro' ),
+          'pro_text' => esc_html__( 'Go Pro', 'customize-section-pro' ),
           'pro_url' => 'http://example.com'
         )
     );
 }
 
-class Example_2_js_customize {
+//Fired on customize_register
+//Following exchanges with @celloexpressions on slack.
+//Php section instance is the recommended way to render the template
+//=> the js templates will get wrapped inside <script> tags with an #id that the js customize api will identify
+class Customize_Section_Pro extends WP_Customize_Section {
+      public $type ='customize-section-pro';
+
+      //overrides the default template
+      protected function render_template() { ?>
+        <li id="accordion-section-{{ data.id }}" class="accordion-section control-section control-section-{{ data.type }} cannot-expand">
+            <h3 class="accordion-section-title">
+              {{ data.title }}
+              <# if ( data.pro_text && data.pro_url ) { #>
+                <a href="{{ data.pro_url }}" class="button button-secondary alignright" target="_blank">{{ data.pro_text }}</a>
+              <# } #>
+            </h3>
+          </li>
+      <?php }
+}
+
+//fired on customize_register
+class Process_Pro_Section {
     public $type;
     public $title;
     public $pro_text;
@@ -35,9 +64,9 @@ class Example_2_js_customize {
         $params = wp_parse_args(
             $params,
             array(
-              'type' => 'example-2-js',//this is the section identifier
-              'title' => esc_html__( 'Theme Name Pro', 'example-2-js' ),
-              'pro_text' => esc_html__( 'Go Pro', 'example-2-js' ),
+              'type' => 'customize-section-pro',//this is the section identifier
+              'title' => esc_html__( 'Theme Name Pro', 'customize-section-pro' ),
+              'pro_text' => esc_html__( 'Go Pro', 'customize-section-pro' ),
               'pro_url' => 'http://example.com'
             )
         );
@@ -48,7 +77,6 @@ class Example_2_js_customize {
             $this->$key = $params[ $key ];
           }
         }
-
         //'customize_controls_print_scripts' is fired in wp-admin/customize.php, in the <head> tag of the customizer pane
         add_action( 'customize_controls_print_scripts', array( $this, 'print_pro_section' ) );
     }
@@ -100,22 +128,6 @@ class Example_2_js_customize {
       </script>
       <?php
 
-      /*************************************/
-      //prints the pro section template
-      //the identifier is $this -> type
-      /*************************************/
-      ?>
-        <script type="text/html" id="tmpl-customize-section-<?php echo $this -> type; ?>">
-          <li id="accordion-section-{{ data.id }}" class="accordion-section control-section control-section-{{ data.type }} cannot-expand">
-            <h3 class="accordion-section-title">
-              {{ data.title }}
-              <# if ( data.pro_text && data.pro_url ) { #>
-                <a href="{{ data.pro_url }}" class="button button-secondary alignright" target="_blank">{{ data.pro_text }}</a>
-              <# } #>
-            </h3>
-          </li>
-        </script>
-      <?php
 
 
       /*************************************/
