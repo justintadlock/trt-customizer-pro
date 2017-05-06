@@ -62,7 +62,7 @@ final class Example_1_Customize {
 	public function sections( $manager ) {
 
 		// Load custom sections.
-		require_once( trailingslashit( get_template_directory() ) . 'trt-customize-pro/example-1/section-pro.php' );
+		require_once( trailingslashit( get_template_directory() ) . 'trt-customizer-pro/example-1/section-pro.php' );
 
 		// Register custom section types.
 		$manager->register_section_type( 'Example_1_Customize_Section_Pro' );
@@ -90,9 +90,9 @@ final class Example_1_Customize {
 	 */
 	public function enqueue_control_scripts() {
 
-		wp_enqueue_script( 'example-1-customize-controls', trailingslashit( get_template_directory_uri() ) . 'trt-customize-pro/example-1/customize-controls.js', array( 'customize-controls' ) );
+		wp_enqueue_script( 'example-1-customize-controls', trailingslashit( get_template_directory_uri() ) . 'trt-customizer-pro/example-1/customize-controls.js', array( 'customize-controls' ) );
 
-		wp_enqueue_style( 'example-1-customize-controls', trailingslashit( get_template_directory_uri() ) . 'trt-customize-pro/example-1/customize-controls.css' );
+		wp_enqueue_style( 'example-1-customize-controls', trailingslashit( get_template_directory_uri() ) . 'trt-customizer-pro/example-1/customize-controls.css' );
 	}
 }
 
